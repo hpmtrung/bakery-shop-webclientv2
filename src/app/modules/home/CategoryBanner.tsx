@@ -39,6 +39,8 @@ export type CategoryBannerProps = {
 const CategoryBanner = ({ categories, tabIndex }: CategoryBannerProps) => {
   const slider = React.useRef<Slider>(null);
 
+	if (categories.length === 0) return null;
+
   if (slider.current != null) {
     slider.current.slickGoTo(tabIndex);
   }

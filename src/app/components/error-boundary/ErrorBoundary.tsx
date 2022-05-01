@@ -23,7 +23,7 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryS
     const { error, errorInfo } = this.state;
     if (errorInfo) {
       // Error details are exposed only at dev mode
-      const errorDetails = process.env.NODE_ENV == 'production' ? (
+      const errorDetails = process.env.NODE_ENV === 'production' ? (
         <details className="preserve-space">
           {error && error.toString()}
           <br />
