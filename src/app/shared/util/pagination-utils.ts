@@ -1,0 +1,48 @@
+import { AxiosResponseHeaders } from 'axios';
+import { isEmpty } from 'lodash';
+import { getUrlParameter } from './url-utils';
+
+export interface IPaginationBaseState {
+  itemsPerPage: number;
+  sort: string;
+  order: string;
+  activePage: number;
+}
+
+export const getTotalItemsFromHeaders = (headers: AxiosResponseHeaders) => {
+  if (isEmpty(headers)) throw Error('Header is empty');
+  return parseInt(headers['x-total-count'], 10);
+};
+
+export const getSortState = (location: { search: string }, itemsPerPage: number, idField: string): IPaginationBaseState => {
+  const pageParam = getUrlParameter('page', location.search);
+  const sortParam = getUrlParameter('sort', location.search);
+  let sort = idField || 'id';
+  let order = 'asc';
+  // let activePage = 1;
+  let activePage = 0;
+  if (pageParam !== '' && !isNaN(parseInt(pageParam, 10))) {
+    activePage = parseInt(pageParam, 10);
+  }
+  if (sortParam !== '') {
+    sort = sortParam.split(',')[0];
+    order = sortParam.split(',')[1];
+  }
+  return { itemsPerPage, sort, order, activePage };
+};
+
+/**
+ * Retrieve new data when infinite scrolling
+ * @param currentData
+ * @param incomingData
+ * @param links
+ */
+export const loadMoreDataWhenScrolled = (currentData: any, incomingData: any, links: any): any => {
+  if (links.first === links.last || !currentData.length) {
+    return incomingData;
+  }
+  if (currentData.length >= incomingData.length) {
+    return [...currentData, ...incomingData];
+  }
+  return null;
+};

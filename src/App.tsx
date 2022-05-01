@@ -1,58 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { AUTHORITIES } from "./app/config/constants";
+import "./app/config/dayjs.ts";
+import { useAppDispatch, useAppSelector } from "./app/config/store";
+import AppRoutes from "src/routes";
+import { hasAnyAuthority } from "./app/shared/private-route/PrivateRoute";
+import ErrorBoundary from "./app/components/error-boundary/ErrorBoundary";
+import Footer from "./app/layout/Footer";
+import React, { useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { getAppProfile } from "./app/modules/app-profile/application-profile";
+import Header from "./app/layout/header/Header";
+import { getSession } from "./app/modules/auth/authentication.reducer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
-}
+// const baseHref = document!.querySelector("base")!.getAttribute("href")!.replace(/\/$/, "");
+
+export const App = () => {
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(getSession());
+		dispatch(getAppProfile());
+	}, [dispatch]);
+
+	const currentLocale = useAppSelector((state) => state.locale.currentLocale);
+	const isAuthenticated = useAppSelector(
+		(state) => state.authentication.isAuthenticated
+	);
+	const isAdmin = useAppSelector((state) =>
+		hasAnyAuthority(state.authentication.account.authorities, [
+			AUTHORITIES.ADMIN,
+		])
+	);
+
+	return (
+		// <BrowserRouter basename={baseHref}>
+		<BrowserRouter>
+			<ErrorBoundary>
+				<Header
+					isAuthenticated={isAuthenticated}
+					isAdmin={isAdmin}
+					currentLocale={currentLocale}
+				/>
+			</ErrorBoundary>
+			<ErrorBoundary>
+				<AppRoutes />
+			</ErrorBoundary>
+			<Footer />
+		</BrowserRouter>
+	);
+};
 
 export default App;
