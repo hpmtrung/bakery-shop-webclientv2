@@ -6,7 +6,7 @@ export interface FadeTruncateTypograhyProps extends TypographyProps {
   line: number;
 }
 
-const FadeTruncateTypograhy = styled('div', {
+const FadeTruncateTypograhy = styled(Typography, {
   shouldForwardProp: prop => prop !== 'line',
   name: 'FadeTruncateTextStyled',
   slot: 'Root',
