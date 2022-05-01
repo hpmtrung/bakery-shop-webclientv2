@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const TIMEOUT = 1 * 60 * 1000;
 axios.defaults.timeout = TIMEOUT;
-axios.defaults.baseURL = "https://bakeryshop-web-service.herokuapp.com/";
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_API_URL;
 
 const setupAxiosInterceptors = onUnauthenticated => {
   const onRequestSuccess = config => {
