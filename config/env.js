@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const paths = require('./paths');
+const { hashElement } = require("folder-hash");
 
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve('./paths')];
@@ -60,7 +61,17 @@ process.env.NODE_PATH = (process.env.NODE_PATH || '')
 // injected into the application via DefinePlugin in webpack configuration.
 const REACT_APP = /^REACT_APP_/i;
 
-function getClientEnvironment(publicUrl) {
+async function getClientEnvironment(publicUrl) {
+
+  const languagesHash = await hashElement(
+		path.resolve(__dirname, "../src/i18n"),
+		{
+			algo: "md5",
+			encoding: "hex",
+			files: { include: ["*.json"] },
+		}
+	);
+
   const raw = Object.keys(process.env)
     .filter(key => REACT_APP.test(key))
     .reduce(

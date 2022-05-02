@@ -13,7 +13,9 @@ export type LocaleState = Readonly<typeof initialState>;
 
 export const setLocale: (locale: string) => AppThunk = locale => async dispatch => {
   if (!Object.keys(TranslatorContext.context.translations).includes(locale)) {
-    const response = await axios.get(`i18n/${locale}.json`, { baseURL: '' });
+    const response = await axios.get(`i18n/${locale}.json?_=${I18N_HASH}`, {
+			baseURL: "",
+		});
     TranslatorContext.registerTranslations(locale, response.data);
   }
   dispatch(updateLocale(locale));

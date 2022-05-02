@@ -1,16 +1,15 @@
+import React, { useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "src/routes";
+import ErrorBoundary from "./app/components/error-boundary/ErrorBoundary";
 import { AUTHORITIES } from "./app/config/constants";
 import "./app/config/dayjs.ts";
 import { useAppDispatch, useAppSelector } from "./app/config/store";
-import AppRoutes from "src/routes";
-import { hasAnyAuthority } from "./app/shared/private-route/PrivateRoute";
-import ErrorBoundary from "./app/components/error-boundary/ErrorBoundary";
 import Footer from "./app/layout/Footer";
-import React, { useEffect } from "react";
-import { BrowserRouter } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
-import { getAppProfile } from "./app/modules/app-profile/application-profile";
 import Header from "./app/layout/header/Header";
+import { getAppProfile } from "./app/modules/app-profile/application-profile";
 import { getSession } from "./app/modules/auth/authentication.reducer";
+import { hasAnyAuthority } from "./app/shared/private-route/PrivateRoute";
 
 // const baseHref = document!.querySelector("base")!.getAttribute("href")!.replace(/\/$/, "");
 
