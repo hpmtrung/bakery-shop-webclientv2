@@ -1,60 +1,60 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
-const webpack = require('webpack');
-const resolve = require('resolve');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
-const ESLintPlugin = require('eslint-webpack-plugin');
-const paths = require('./paths');
-const modules = require('./modules');
-const getClientEnvironment = require('./env');
-const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
+const fs = require("fs");
+const path = require("path");
+const webpack = require("webpack");
+const resolve = require("resolve");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
+const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
+const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
+const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
+const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent");
+const ESLintPlugin = require("eslint-webpack-plugin");
+const paths = require("./paths");
+const modules = require("./modules");
+const getClientEnvironment = require("./env");
+const ModuleNotFoundPlugin = require("react-dev-utils/ModuleNotFoundPlugin");
 const ForkTsCheckerWebpackPlugin =
-  process.env.TSC_COMPILE_ON_ERROR === 'true'
-    ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin')
-    : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+	process.env.TSC_COMPILE_ON_ERROR === "true"
+		? require("react-dev-utils/ForkTsCheckerWarningWebpackPlugin")
+		: require("react-dev-utils/ForkTsCheckerWebpackPlugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin");
 
-const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
+const createEnvironmentHash = require("./webpack/persistentCache/createEnvironmentHash");
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== "false";
 
-const reactRefreshRuntimeEntry = require.resolve('react-refresh/runtime');
+const reactRefreshRuntimeEntry = require.resolve("react-refresh/runtime");
 const reactRefreshWebpackPluginRuntimeEntry = require.resolve(
-  '@pmmmwh/react-refresh-webpack-plugin'
+	"@pmmmwh/react-refresh-webpack-plugin"
 );
-const babelRuntimeEntry = require.resolve('babel-preset-react-app');
+const babelRuntimeEntry = require.resolve("babel-preset-react-app");
 const babelRuntimeEntryHelpers = require.resolve(
-  '@babel/runtime/helpers/esm/assertThisInitialized',
-  { paths: [babelRuntimeEntry] }
+	"@babel/runtime/helpers/esm/assertThisInitialized",
+	{ paths: [babelRuntimeEntry] }
 );
-const babelRuntimeRegenerator = require.resolve('@babel/runtime/regenerator', {
-  paths: [babelRuntimeEntry],
+const babelRuntimeRegenerator = require.resolve("@babel/runtime/regenerator", {
+	paths: [babelRuntimeEntry],
 });
 
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
-const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
+const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== "false";
 
-const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
-const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
+const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === "true";
+const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === "true";
 
 const imageInlineSizeLimit = parseInt(
-  process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
+	process.env.IMAGE_INLINE_SIZE_LIMIT || "10000"
 );
 
 // Check if TypeScript is setup
@@ -62,7 +62,7 @@ const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 // Check if Tailwind config exists
 const useTailwind = fs.existsSync(
-  path.join(paths.appPath, 'tailwind.config.js')
+	path.join(paths.appPath, "tailwind.config.js")
 );
 
 // Get the path to the uncompiled service worker (if it exists).
@@ -75,120 +75,120 @@ const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 const hasJsxRuntime = (() => {
-  if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
-    return false;
-  }
+	if (process.env.DISABLE_NEW_JSX_TRANSFORM === "true") {
+		return false;
+	}
 
-  try {
-    require.resolve('react/jsx-runtime');
-    return true;
-  } catch (e) {
-    return false;
-  }
+	try {
+		require.resolve("react/jsx-runtime");
+		return true;
+	} catch (e) {
+		return false;
+	}
 })();
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (webpackEnv) {
-  const isEnvDevelopment = webpackEnv === 'development';
-  const isEnvProduction = webpackEnv === 'production';
+	const isEnvDevelopment = webpackEnv === "development";
+	const isEnvProduction = webpackEnv === "production";
 
-  // Variable used for enabling profiling in Production
-  // passed into alias object. Uses a flag if passed into the build command
-  const isEnvProductionProfile =
-    isEnvProduction && process.argv.includes('--profile');
+	// Variable used for enabling profiling in Production
+	// passed into alias object. Uses a flag if passed into the build command
+	const isEnvProductionProfile =
+		isEnvProduction && process.argv.includes("--profile");
 
-  // We will provide `paths.publicUrlOrPath` to our app
-  // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
-  // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
-  // Get environment variables to inject into our app.
-  const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
+	// We will provide `paths.publicUrlOrPath` to our app
+	// as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
+	// Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
+	// Get environment variables to inject into our app.
+	const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
-  const shouldUseReactRefresh = env.raw.FAST_REFRESH;
+	const shouldUseReactRefresh = env.raw.FAST_REFRESH;
 
-  // common function to get style loaders
-  const getStyleLoaders = (cssOptions, preProcessor) => {
-    const loaders = [
-      isEnvDevelopment && require.resolve('style-loader'),
-      isEnvProduction && {
-        loader: MiniCssExtractPlugin.loader,
-        // css is located in `static/css`, use '../../' to locate index.html folder
-        // in production `paths.publicUrlOrPath` can be a relative path
-        options: paths.publicUrlOrPath.startsWith('.')
-          ? { publicPath: '../../' }
-          : {},
-      },
-      {
-        loader: require.resolve('css-loader'),
-        options: cssOptions,
-      },
-      {
-        // Options for PostCSS as we reference these options twice
-        // Adds vendor prefixing based on your specified browser support in
-        // package.json
-        loader: require.resolve('postcss-loader'),
-        options: {
-          postcssOptions: {
-            // Necessary for external CSS imports to work
-            // https://github.com/facebook/create-react-app/issues/2677
-            ident: 'postcss',
-            config: false,
-            plugins: !useTailwind
-              ? [
-                  'postcss-flexbugs-fixes',
-                  [
-                    'postcss-preset-env',
-                    {
-                      autoprefixer: {
-                        flexbox: 'no-2009',
-                      },
-                      stage: 3,
-                    },
-                  ],
-                  // Adds PostCSS Normalize as the reset css with default options,
-                  // so that it honors browserslist config in package.json
-                  // which in turn let's users customize the target behavior as per their needs.
-                  'postcss-normalize',
-                ]
-              : [
-                  'tailwindcss',
-                  'postcss-flexbugs-fixes',
-                  [
-                    'postcss-preset-env',
-                    {
-                      autoprefixer: {
-                        flexbox: 'no-2009',
-                      },
-                      stage: 3,
-                    },
-                  ],
-                ],
-          },
-          sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-        },
-      },
-    ].filter(Boolean);
-    if (preProcessor) {
-      loaders.push(
-        {
-          loader: require.resolve('resolve-url-loader'),
-          options: {
-            sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-            root: paths.appSrc,
-          },
-        },
-        {
-          loader: require.resolve(preProcessor),
-          options: {
-            sourceMap: true,
-          },
-        }
-      );
-    }
-    return loaders;
-  };
+	// common function to get style loaders
+	const getStyleLoaders = (cssOptions, preProcessor) => {
+		const loaders = [
+			isEnvDevelopment && require.resolve("style-loader"),
+			isEnvProduction && {
+				loader: MiniCssExtractPlugin.loader,
+				// css is located in `static/css`, use '../../' to locate index.html folder
+				// in production `paths.publicUrlOrPath` can be a relative path
+				options: paths.publicUrlOrPath.startsWith(".")
+					? { publicPath: "../../" }
+					: {},
+			},
+			{
+				loader: require.resolve("css-loader"),
+				options: cssOptions,
+			},
+			{
+				// Options for PostCSS as we reference these options twice
+				// Adds vendor prefixing based on your specified browser support in
+				// package.json
+				loader: require.resolve("postcss-loader"),
+				options: {
+					postcssOptions: {
+						// Necessary for external CSS imports to work
+						// https://github.com/facebook/create-react-app/issues/2677
+						ident: "postcss",
+						config: false,
+						plugins: !useTailwind
+							? [
+									"postcss-flexbugs-fixes",
+									[
+										"postcss-preset-env",
+										{
+											autoprefixer: {
+												flexbox: "no-2009",
+											},
+											stage: 3,
+										},
+									],
+									// Adds PostCSS Normalize as the reset css with default options,
+									// so that it honors browserslist config in package.json
+									// which in turn let's users customize the target behavior as per their needs.
+									"postcss-normalize",
+							  ]
+							: [
+									"tailwindcss",
+									"postcss-flexbugs-fixes",
+									[
+										"postcss-preset-env",
+										{
+											autoprefixer: {
+												flexbox: "no-2009",
+											},
+											stage: 3,
+										},
+									],
+							  ],
+					},
+					sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+				},
+			},
+		].filter(Boolean);
+		if (preProcessor) {
+			loaders.push(
+				{
+					loader: require.resolve("resolve-url-loader"),
+					options: {
+						sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+						root: paths.appSrc,
+					},
+				},
+				{
+					loader: require.resolve(preProcessor),
+					options: {
+						sourceMap: true,
+					},
+				}
+			);
+		}
+		return loaders;
+	};
 
-  return {
+	return {
 		target: ["browserslist"],
 		// Webpack noise constrained to errors and warnings
 		stats: "errors-warnings",

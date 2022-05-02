@@ -2,8 +2,6 @@
 /// <reference types="react" />
 /// <reference types="react-dom" />
 
-declare const I18N_HASH: string;
-
 declare namespace NodeJS {
   interface ProcessEnv {
     readonly NODE_ENV: 'development' | 'production' | 'test';
