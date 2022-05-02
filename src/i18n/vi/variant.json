@@ -1,0 +1,11 @@
+{
+  "variant": {
+    "message": {
+      "deleteSucceed": "Xóa biến thể thành công"
+    },
+    "error": {
+      "deleteSold": "Biến thể sản phẩm đã bán nên không thể xóa",
+      "costPriceInvalid": "Không thể cập nhật vì giá gốc chưa hợp lệ (giá gốc lớn hơn giá bán)"
+    }
+  }
+}

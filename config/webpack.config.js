@@ -26,6 +26,7 @@ const ForkTsCheckerWebpackPlugin =
     : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin");
 
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
 
@@ -761,6 +762,20 @@ module.exports = function (webpackEnv) {
 					{ from: "./node_modules/axios/dist/axios.min.js", to: "swagger-ui/" },
 					{ from: "./src/swagger-ui/", to: "swagger-ui/" },
 				],
+			}),
+			new MergeJsonWebpackPlugin({
+				output: {
+					groupBy: [
+						{
+							pattern: "./src/i18n/vi/*.json",
+							fileName: "./i18n/vi.json",
+						},
+						{
+							pattern: "./src/i18n/en/*.json",
+							fileName: "./i18n/en.json",
+						},
+					],
+				},
 			}),
 		].filter(Boolean),
 		// Turn off performance processing because we utilize

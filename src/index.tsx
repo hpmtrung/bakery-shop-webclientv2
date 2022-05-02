@@ -21,6 +21,7 @@ import "@fontsource/roboto/700.css";
 // Carousel theme
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+
 import { registerCart } from "src/app/config/cart";
 import reportWebVitals from "./reportWebVitals";
 // prettier-ignore-end

@@ -1,0 +1,7 @@
+{
+  "variant": {
+    "error": {
+      "deleteSold": "Sold variant cannot be deleted"
+    }
+  }
+}

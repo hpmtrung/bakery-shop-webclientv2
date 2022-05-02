@@ -1,9 +1,7 @@
 /* eslint no-console: off */
 export default () => (next) => (action) => {
 
-  console.log("At logger-middle:" + process.env.NODE_ENV); // eslint-disable-line no-console
-
-	if (process.env.NODE_ENV === "production") {
+	if (process.env.NODE_ENV === "development") {
 		const { type, payload, meta, error } = action;
 
 		console.groupCollapsed(type);

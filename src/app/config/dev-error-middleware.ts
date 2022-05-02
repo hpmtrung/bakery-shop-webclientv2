@@ -10,7 +10,6 @@ const getErrorMessage = (errorData) => {
 
 export default () => (next) => (action) => {
 
-	console.log("At dev-error-middle:" + process.env.NODE_ENV); // eslint-disable-line no-console
 	/**
 	 *
 	 * The error middleware serves to log error messages from dispatch
