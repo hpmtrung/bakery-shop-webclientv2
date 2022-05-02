@@ -16,6 +16,8 @@ import OverviewOrderPaper from "./OverviewOrderPaper";
 
 const ORDERS_PER_PAGE = 4;
 
+const MemoOverviewOrderPaper = React.memo(OverviewOrderPaper);
+
 const AccountOrdersPage = () => {
 	const theme = useTheme();
 	const navigate = useNavigate();
@@ -68,12 +70,10 @@ const AccountOrdersPage = () => {
 	};
 
 	const handleLoadMore = useCallback(() => {
-		if (window.pageYOffset > 0) {
-			setOrdersPagination({
-				...ordersPagination,
-				activePage: ordersPagination.activePage + 1,
-			});
-		}
+		setOrdersPagination({
+			...ordersPagination,
+			activePage: ordersPagination.activePage + 1,
+		});
 	}, [ordersPagination]);
 
 	return (
@@ -100,7 +100,7 @@ const AccountOrdersPage = () => {
 						hasMore={ordersPagination.activePage < links.next}
 						loader={<CircularLoadingIndicator />}>
 						{orders.map((order) => (
-							<OverviewOrderPaper
+							<MemoOverviewOrderPaper
 								key={order.id}
 								order={order}
 								handleShowDetails={handleShowDetails}
