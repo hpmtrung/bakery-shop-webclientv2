@@ -2,13 +2,11 @@ import React from "react";
 // import { Route, Redirect, RouteProps } from 'react-router-dom';
 import {
 	Navigate,
-	Outlet,
-	Route,
-	RouteProps,
-	useLocation,
+	Outlet, RouteProps,
+	useLocation
 } from "react-router-dom";
-import { useAppSelector } from "src/app/config/store";
 import ErrorBoundary from "src/app/components/error-boundary/ErrorBoundary";
+import { useAppSelector } from "src/app/config/store";
 import Translate from "../language/Translate";
 
 interface IPrivateRouteProps extends RouteProps {

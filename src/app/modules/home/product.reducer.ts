@@ -13,7 +13,6 @@ const initialState = {
   product: defaultValue,
   links: { next: 0 },
   totalItems: 0,
-  productsNotFound: false,
 };
 
 // Actions
@@ -39,7 +38,6 @@ export const ProductSlice = createSlice({
       .addMatcher(isPending(getProductsOfCategory), state => {
         state.loading = true;
         state.errorMessage = null;
-        state.productsNotFound = false;
       })
       .addMatcher(isFulfilled(getProductsOfCategory), (state, action) => {
         const { data, headers } = action.payload;
@@ -51,7 +49,6 @@ export const ProductSlice = createSlice({
           links,
           products: loadMoreDataWhenScrolled(state.products, data, links),
           totalItems,
-          productsNotFound: totalItems === 0,
         };
       })
       .addMatcher(isRejected(getProductsOfCategory), (state, action) => {

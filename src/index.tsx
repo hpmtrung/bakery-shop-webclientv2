@@ -1,30 +1,28 @@
-// prettier-ignore-start
-import { createTheme, CssBaseline, Fade, ThemeProvider } from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { bindActionCreators } from "redux";
-import AppComponent from "./App";
+import ErrorBoundary from "src/app/components/error-boundary/ErrorBoundary";
+import { NotificationProvider } from "src/app/components/notification";
 import setupAxiosInterceptors from "src/app/config/axios-interceptor";
+import { registerCart } from "src/app/config/cart";
 import getStore from "src/app/config/store";
 import { registerLocale } from "src/app/config/translation";
-import ErrorBoundary from "src/app/components/error-boundary/ErrorBoundary";
 import { clearAuthentication } from "src/app/modules/auth/authentication.reducer";
-import { NotificationProvider } from "src/app/components/notification";
-import { SnackbarProvider } from "notistack";
+import AppComponent from "./App";
+import reportWebVitals from "./reportWebVitals";
 
 // Font
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+
 // Carousel theme
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-
-import { registerCart } from "src/app/config/cart";
-import reportWebVitals from "./reportWebVitals";
-// prettier-ignore-end
 
 const store = getStore();
 // Register default locale

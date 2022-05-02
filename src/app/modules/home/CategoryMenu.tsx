@@ -31,6 +31,8 @@ const ProductsNotFound = React.memo(() => (
   </Box>
 ));
 
+const MemoProductCart = React.memo(ProductCard);
+
 const CategoryMenu = () => {
   const location = useLocation();
   const theme = useTheme();
@@ -49,12 +51,8 @@ const CategoryMenu = () => {
 
   const dispatch = useAppDispatch();
 
-  const categoryLoading = useAppSelector(state => state.category.loading);
-  const categories = useAppSelector(state => state.category.categories);
-  const products = useAppSelector(state => state.product.products);
-  const productLoading = useAppSelector(state => state.product.loading);
-  const linksProduct = useAppSelector(state => state.product.links);
-  const productsNotFound = useAppSelector(state => state.product.productsNotFound);
+  const { loading: categoryLoading, categories } = useAppSelector(state => state.category);
+  const { loading: productLoading, products, links, totalItems } = useAppSelector(state => state.product);
 
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   const [productPagination, setProductPagination] = React.useState(getSortState(location, PRODUCT_ITEMS_PER_PAGE, 'id'));
@@ -98,73 +96,77 @@ const CategoryMenu = () => {
   };
 
   const handleLoadMore = () => {
-    if (window.pageYOffset > 0) {
+    // if (window.pageYOffset > 0) {
       setProductPagination({
         ...productPagination,
         activePage: productPagination.activePage + 1,
       });
-    }
+    // }
   };
 
   return (
-    <>
-      {/* Banner */}
-      <CategoryBanner categories={categories} tabIndex={selectedCategoryIndex} />
-      {/* Menu */}
-      {!categoryLoading && (
-        <CustomSection sx={{ mt: -19 }}>
-          <Paper elevation={1}>
-            {/* Tabs */}
-            <ResponsiveTab
-              breakpoint={theme.breakpoints.up('lg')}
-              value={selectedCategoryIndex}
-              onChange={handleTabChange}
-              iconSVG
-              tabItems={[
-                { icon: CupCakeIcon, label: 'Cup Cake' },
-                { icon: BirthdayCakeIcon, label: 'Birthday Cake' },
-                { icon: CheeseCakeIcon, label: 'Cheese Cake' },
-                { icon: IceCreamCakeIcon, label: 'Pudding Cake' },
-                { icon: IceBoxCakeIcon, label: 'Icebox Cake' },
-                { icon: BrownieCakeIcon, label: 'Brownie Cake' },
-              ]}
-            />
-            {/* Product grid */}
-            <Box sx={{ p: 3 }}>
-              {productLoading ? (
-                <CircularLoadingIndicator />
-              ) : productsNotFound ? (
-                <ProductsNotFound />
-              ) : (
-                <InfiniteScroll
-                  dataLength={products.length}
-                  next={handleLoadMore}
-                  hasMore={productPagination.activePage < linksProduct.next}
-                  loader={<CircularLoadingIndicator />}
-                >
-                  <Grid container spacing={3} p={2}>
-                    {products.map(
-                      product =>
-                        product.variants.length > 0 && (
-                          <ProductCard
-                            key={product.id}
-                            product={product}
-                            variantChipsPerPane={maxVariantChips}
-                            onShowProductDetailModal={handleShowProductDetailModal}
-                          />
-                        )
-                    )}
-                  </Grid>
-                </InfiniteScroll>
-              )}
-            </Box>
-          </Paper>
-        </CustomSection>
-      )}
-      <ProductDetailDialog />
-      <CartNotificationSnackbar />
-    </>
-  );
+		<>
+			{/* Banner */}
+			<CategoryBanner
+				categories={categories}
+				tabIndex={selectedCategoryIndex}
+			/>
+			{/* Menu */}
+			{!categoryLoading && (
+				<CustomSection sx={{ mt: -19 }}>
+					<Paper elevation={1}>
+						{/* Tabs */}
+						<ResponsiveTab
+							breakpoint={theme.breakpoints.up("lg")}
+							value={selectedCategoryIndex}
+							onChange={handleTabChange}
+							iconSVG
+							tabItems={[
+								{ icon: CupCakeIcon, label: "Cup Cake" },
+								{ icon: BirthdayCakeIcon, label: "Birthday Cake" },
+								{ icon: CheeseCakeIcon, label: "Cheese Cake" },
+								{ icon: IceCreamCakeIcon, label: "Pudding Cake" },
+								{ icon: IceBoxCakeIcon, label: "Icebox Cake" },
+								{ icon: BrownieCakeIcon, label: "Brownie Cake" },
+							]}
+						/>
+						{/* Product grid */}
+						<Box sx={{ p: 3 }}>
+							{productLoading && totalItems === 0 ? (
+								<CircularLoadingIndicator />
+							) : totalItems === 0 ? (
+								<ProductsNotFound />
+							) : (
+								<InfiniteScroll
+									dataLength={products.length}
+									next={handleLoadMore}
+									hasMore={productPagination.activePage < links.next}
+									loader={<CircularLoadingIndicator />}>
+									<Grid container spacing={3} p={2}>
+										{products.map(
+											(product) =>
+												product.variants.length > 0 && (
+													<MemoProductCart
+														key={product.id}
+														product={product}
+														variantChipsPerPane={maxVariantChips}
+														onShowProductDetailModal={
+															handleShowProductDetailModal
+														}
+													/>
+												)
+										)}
+									</Grid>
+								</InfiniteScroll>
+							)}
+						</Box>
+					</Paper>
+				</CustomSection>
+			)}
+			<ProductDetailDialog />
+			<CartNotificationSnackbar />
+		</>
+	);
 };
 
 export default CategoryMenu;
