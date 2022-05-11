@@ -14,7 +14,7 @@ const initialState: DashboardState = {
   errorMessage: null,
 };
 
-const apiURL = 'api/admin/home';
+const apiURL = '/api/admin/home';
 
 // Actions
 export const getDashboardData = createAsyncThunk('dashboard/get_data', async () => {

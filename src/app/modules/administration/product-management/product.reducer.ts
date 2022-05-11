@@ -66,7 +66,7 @@ const initialState: ProductManagementState = {
   },
 };
 
-const apiURL = 'api/admin/products';
+const apiURL = '/api/admin/products';
 const SLICE_NAME = 'managed_products';
 
 // Actions
