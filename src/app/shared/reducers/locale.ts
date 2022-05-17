@@ -14,7 +14,7 @@ export const setLocale: (locale: string) => AppThunk =
 	(locale) => async (dispatch) => {
 		if (!Object.keys(TranslatorContext.context.translations).includes(locale)) {
 			const response = await axios.get(
-				`i18n/${locale}.json?_=${process.env.REACT_APP_I18N_HASH}`,
+				`/i18n/${locale}.json?_=${process.env.REACT_APP_I18N_HASH}`,
 				{
 					baseURL: "",
 				}
