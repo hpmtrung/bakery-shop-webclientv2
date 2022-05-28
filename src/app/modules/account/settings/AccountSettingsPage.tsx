@@ -143,6 +143,7 @@ export const AccountSettingsPage = () => {
 									required: "Your email is required",
 								}}
 								fullWidth
+								readOnly
 							/>
 						</Grid>
 						<Grid container item spacing={1}>
