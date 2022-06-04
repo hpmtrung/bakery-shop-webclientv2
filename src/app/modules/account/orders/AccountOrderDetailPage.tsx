@@ -151,7 +151,7 @@ const AccountOrderDetailPage = () => {
 													<NumberFormat
 														value={detail.unitPrice}
 														thousandSeparator={true}
-														prefix='$'
+														prefix='đ'
 														inputMode='numeric'
 														displayType={"text"}
 													/>
@@ -172,7 +172,7 @@ const AccountOrderDetailPage = () => {
 													<NumberFormat
 														value={detail.unitPrice * detail.quantity}
 														thousandSeparator={true}
-														prefix='$'
+														prefix='đ'
 														inputMode='numeric'
 														displayType={"text"}
 													/>
@@ -202,7 +202,7 @@ const AccountOrderDetailPage = () => {
 										<NumberFormat
 											value={order.total}
 											thousandSeparator={true}
-											prefix='$'
+											prefix='đ'
 											inputMode='numeric'
 											displayType={"text"}
 										/>
@@ -221,7 +221,7 @@ const AccountOrderDetailPage = () => {
 										<NumberFormat
 											value={0}
 											thousandSeparator={true}
-											prefix='$'
+											prefix='đ'
 											inputMode='numeric'
 											displayType={"text"}
 										/>
@@ -240,7 +240,7 @@ const AccountOrderDetailPage = () => {
 										<NumberFormat
 											value={order.total}
 											thousandSeparator={true}
-											prefix='$'
+											prefix='đ'
 											inputMode='numeric'
 											displayType={"text"}
 										/>

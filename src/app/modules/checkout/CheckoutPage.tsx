@@ -279,7 +279,7 @@ const CheckoutPage = () => {
 															<NumberFormat
 																value={item.unitPrice}
 																thousandSeparator={true}
-																prefix='$'
+																prefix='đ'
 																inputMode='numeric'
 																displayType={"text"}
 															/>
@@ -298,7 +298,7 @@ const CheckoutPage = () => {
 																<NumberFormat
 																	value={item.unitPrice * item.quantity}
 																	thousandSeparator={true}
-																	prefix='$'
+																	prefix='đ'
 																	inputMode='numeric'
 																	displayType={"text"}
 																/>

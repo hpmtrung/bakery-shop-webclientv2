@@ -52,7 +52,7 @@ const CheckoutInfo = () => {
             Tạm tính
           </Typography>
           <Typography variant="body2" color="text.primary" textAlign="right">
-            <NumberFormat value={total} thousandSeparator={true} prefix="$" inputMode="numeric" displayType={'text'} />
+            <NumberFormat value={total} thousandSeparator={true} prefix='đ' inputMode="numeric" displayType={'text'} />
           </Typography>
         </Stack>
         <Divider flexItem sx={{ my: 1 }} />
@@ -61,7 +61,7 @@ const CheckoutInfo = () => {
             Tổng tiền
           </Typography>
           <Typography variant="h6" color="primary" textAlign="right">
-            <NumberFormat value={total} thousandSeparator={true} prefix="$" inputMode="numeric" displayType={'text'} />
+            <NumberFormat value={total} thousandSeparator={true} prefix='đ' inputMode="numeric" displayType={'text'} />
           </Typography>
         </Stack>
       </>

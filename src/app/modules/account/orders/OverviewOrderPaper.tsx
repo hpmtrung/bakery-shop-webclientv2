@@ -50,7 +50,7 @@ const OverviewOrderPaper = ({ order, handleShowDetails }: OverviewOrderPaperProp
               <NumberFormat
                 value={order.firstDetail.unitPrice * order.firstDetail.quantity}
                 thousandSeparator={true}
-                prefix="$"
+                prefix='đ'
                 inputMode="numeric"
                 displayType={'text'}
               />
@@ -66,7 +66,7 @@ const OverviewOrderPaper = ({ order, handleShowDetails }: OverviewOrderPaperProp
             Tổng tiền:{' '}
           </Typography>
           <Typography variant="h6" color={grey[600]}>
-            <NumberFormat value={order.total} thousandSeparator={true} prefix="$" inputMode="numeric" displayType={'text'} />
+            <NumberFormat value={order.total} thousandSeparator={true} prefix='đ' inputMode="numeric" displayType={'text'} />
           </Typography>
         </Stack>
         <Button

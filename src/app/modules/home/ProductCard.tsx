@@ -201,7 +201,7 @@ const ProductCard = ({
 							<NumberFormat
 								value={variants[selectedVariantIdx].unitPrice}
 								thousandSeparator={true}
-								prefix='$'
+								prefix='đ'
 								inputMode='numeric'
 								displayType={"text"}
 							/>

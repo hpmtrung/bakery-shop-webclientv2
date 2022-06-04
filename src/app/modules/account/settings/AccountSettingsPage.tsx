@@ -7,7 +7,6 @@ import ResetButton from "src/app/components/form/ResetButton";
 import { ValidatedForm } from "src/app/components/form/ValidatedForm";
 import { ValidatedInput } from "src/app/components/form/ValidatedInput";
 import { ValidatedSelect } from "src/app/components/form/ValidatedSelect";
-import { useSnackbar } from "src/app/components/notification";
 import { useAppDispatch, useAppSelector } from "src/app/config/store";
 import { languages, locales } from "src/app/config/translation";
 import { IUserAccount } from "src/app/modules/auth/model/account.model";
@@ -17,10 +16,9 @@ import { IImageUpload } from "./model/settings.model";
 
 export const AccountSettingsPage = () => {
 	const dispatch = useAppDispatch();
-	const snackbar = useSnackbar();
 
 	const account = useAppSelector((state) => state.authentication.account);
-	const { successMessage, loading } = useAppSelector((state) => state.settings);
+	const { loading } = useAppSelector((state) => state.settings);
 
 	const [imageUpload, setImageUpload] = React.useState<IImageUpload>({
 		file: null,
