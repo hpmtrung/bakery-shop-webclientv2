@@ -5,6 +5,7 @@ import {
 	Outlet, RouteProps,
 	useLocation
 } from "react-router-dom";
+import CircularLoadingIndicator from "src/app/components/CircularLoadingIndicator";
 import ErrorBoundary from "src/app/components/error-boundary/ErrorBoundary";
 import { useAppSelector } from "src/app/config/store";
 import Translate from "../language/Translate";
@@ -40,7 +41,7 @@ export const PrivateRoute = ({
 		);
 
 	if (!sessionHasBeenFetched) {
-		return <h1>Session has not been fetched</h1>;
+		return <CircularLoadingIndicator />;
 	} else {
 		return isAuthenticated ? (
 			checkAuthorities()
