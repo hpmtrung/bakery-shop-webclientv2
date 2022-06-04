@@ -54,8 +54,8 @@ const AccountManagementSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(getAccounts.pending, state => {
-        state = { ...initialState, status: 'loading' };
+      .addCase(getAccounts.pending, () => {
+        return { ...initialState, status: 'loading' } 
       })
       .addCase(getAccounts.fulfilled, (state, action) => {
         const { headers, data } = action.payload;

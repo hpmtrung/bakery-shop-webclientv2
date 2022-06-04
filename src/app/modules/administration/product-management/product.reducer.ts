@@ -248,8 +248,8 @@ const ManagedProductSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(getOverviewProducts.pending, state => {
-        state = initialState;
+      .addCase(getOverviewProducts.pending, () => {
+        return { ...initialState, productList: { ...initialState.productList, status: 'loading' } };
       })
       .addCase(getOverviewProducts.fulfilled, (state, action) => {
         const { headers, data } = action.payload;

@@ -101,8 +101,8 @@ const OrderManagementSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder
-			.addCase(getOverviewOrders.pending, (state) => {
-				state = { ...initialState, status: "loading" };
+			.addCase(getOverviewOrders.pending, () => {
+				return { ...initialState, status: "loading" };
 			})
 			.addCase(getOverviewOrders.fulfilled, (state, action) => {
 				const { headers, data } = action.payload;

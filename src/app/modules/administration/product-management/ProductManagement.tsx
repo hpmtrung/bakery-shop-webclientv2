@@ -104,6 +104,8 @@ const ProductManagement = () => {
     formRef.current.reset();
   };
 
+  console.log("status: " + status); // eslint-disable-line no-console
+
   return status === 'loading' ? (
     <CircularLoadingIndicator />
   ) : products.length === 0 ? (
