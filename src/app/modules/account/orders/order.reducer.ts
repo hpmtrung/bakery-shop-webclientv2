@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 import { IUserOrderWithDetail, IUserOverviewOrder } from 'src/app/modules/account/orders/model/order.model';
 import { IQueryParams } from 'src/app/shared/reducers/reducer.utils';
-import { loadMoreDataWhenScrolled } from 'src/app/shared/util/pagination-utils';
+import { getTotalItemsFromHeaders, loadMoreDataWhenScrolled } from 'src/app/shared/util/pagination-utils';
 import { parseHeaderForLinks } from 'src/app/shared/util/url-utils';
 import axios from 'axios';
 
@@ -11,6 +11,7 @@ export interface UserOrdersState {
   orders: IUserOverviewOrder[];
   selectedOrder: IUserOrderWithDetail | null;
   links: { prev?: number; next?: number };
+  totalItems: number;
 }
 
 const initialState: UserOrdersState = {
@@ -19,6 +20,7 @@ const initialState: UserOrdersState = {
   orders: [],
   selectedOrder: null,
   links: { next: 0 },
+  totalItems: 0,
 };
 
 const apiURL = '/api/account/orders';
@@ -61,6 +63,7 @@ export const UserOrdersSlice = createSlice({
         const { data, headers } = action.payload;
         state.links = parseHeaderForLinks(headers.link);
         state.orders = loadMoreDataWhenScrolled(state.orders, data, state.links);
+        state.totalItems = getTotalItemsFromHeaders(headers);
       })
       .addMatcher(isPending(getAllAccountOrders, getAccountOrdersByStatus, getAccountOrderDetails), state => {
         state.loading = true;

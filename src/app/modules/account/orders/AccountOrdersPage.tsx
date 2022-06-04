@@ -24,7 +24,7 @@ const AccountOrdersPage = () => {
 	const location = useLocation();
 	const dispatch = useAppDispatch();
 	const [selectedStatusIndex, setSelectedStatusIndex] = React.useState(0);
-	const { loading, orders, links } = useAppSelector(
+	const { loading, orders, totalItems } = useAppSelector(
 		(state) => state.userOrders
 	);
 
@@ -74,7 +74,7 @@ const AccountOrdersPage = () => {
 			...ordersPagination,
 			activePage: ordersPagination.activePage + 1,
 		});
-	}, [ordersPagination]);
+	}, [ordersPagination, orders.length, totalItems]);
 
 	return (
 		<Stack direction='column' spacing={1}>
@@ -88,7 +88,7 @@ const AccountOrdersPage = () => {
 					}))}
 				/>
 			</Paper>
-			{loading ? (
+			{loading && orders.length === 0 ? (
 				<Paper elevation={0}>
 					<CircularLoadingIndicator />
 				</Paper>
@@ -97,7 +97,7 @@ const AccountOrdersPage = () => {
 					<InfiniteScroll
 						dataLength={orders.length}
 						next={handleLoadMore}
-						hasMore={ordersPagination.activePage < links.next}
+						hasMore={orders.length < totalItems}
 						loader={<CircularLoadingIndicator />}>
 						{orders.map((order) => (
 							<MemoOverviewOrderPaper
